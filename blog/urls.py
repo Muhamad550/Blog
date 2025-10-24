@@ -1,24 +1,32 @@
-from django.urls import path
-from .views import (
-    BlogPostListCreateView,
-    BlogPostDetailView,
-    CategoryListView,
-    PostsByCategoryView,
-    CommentListCreateView,
-    CommentDetailView,
+from django.contrib import admin
+from django.urls import path, include
+from blog.views import (
+    BlogPostListCreateView, BlogPostDetailView,
+    CategoryListView, PostsByCategoryView,
+    CommentListCreateView, CommentDetailView,
     RegisterView, LoginView, LogoutView
 )
 
-app_name = 'blog'  # Set this to match the namespace in your project-level urls.py
-
 urlpatterns = [
-    path('posts/', BlogPostListCreateView.as_view(), name='post-list-create'),
-    path('posts/<slug:slug>/', BlogPostDetailView.as_view(), name='post-detail'),
-    path('categories/', CategoryListView.as_view(), name='category-list'),
-    path('categories/<int:category_id>/posts/', PostsByCategoryView.as_view(), name='posts-by-category'),
-    path('posts/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list-create'),
-    path('comments/<int:pk>/', CommentDetailView.as_view(), name='comment-detail'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('admin/', admin.site.urls),
+    
+    # Blog Posts
+    path('api/posts/', BlogPostListCreateView.as_view(), name='post-list'),
+    path('api/posts/<int:pk>/', BlogPostDetailView.as_view(), name='post-detail'),
+    
+    # Categories
+    path('api/categories/', CategoryListView.as_view(), name='category-list'),
+    path('api/categories/<int:category_id>/posts/', PostsByCategoryView.as_view(), name='posts-by-category'),
+    
+    # Comments
+    path('api/posts/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list'),
+    path('api/comments/<int:pk>/', CommentDetailView.as_view(), name='comment-detail'),
+    
+    # Authentication
+    path('api/register/', RegisterView.as_view(), name='register'),
+    path('api/login/', LoginView.as_view(), name='login'),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
+    
+    # REST Framework URLs
+    path('api-auth/', include('rest_framework.urls')),
 ]
