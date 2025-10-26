@@ -141,9 +141,25 @@ Visit: http://127.0.0.1:8001/api/posts/
 python manage.py migrate
 ```
 
+**If migrations fail:**
+```bash
+rm db.sqlite3
+python manage.py makemigrations
+python manage.py migrate
+```
+
 **Port Already in Use**
 ```bash
+pkill -f runserver
 python manage.py runserver 8001
+```
+
+**Migration conflicts:**
+```bash
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc" -delete
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 **Page Not Found (404)**
@@ -161,3 +177,4 @@ python manage.py runserver 8001
 - **Email:** ma8287225@gmail.com
 - **Repository:** https://github.com/Muhamad550/Blog.git
 
+---
